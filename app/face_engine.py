@@ -30,10 +30,20 @@ class FaceEngine:
         self.reload_cache()
 
     def load_models(self):
+        import urllib.request
+
+        os.makedirs(os.path.dirname(os.path.abspath(YUNET_MODEL_PATH)), exist_ok=True)
+        os.makedirs(os.path.dirname(os.path.abspath(SFACE_MODEL_PATH)), exist_ok=True)
+
         if not os.path.exists(YUNET_MODEL_PATH):
-            raise FileNotFoundError(f"YuNet model not found at {YUNET_MODEL_PATH}")
+            print(f"Downloading YuNet model to {YUNET_MODEL_PATH}...")
+            yunet_url = "https://github.com/opencv/opencv_zoo/raw/main/models/face_detection_yunet/face_detection_yunet_2023mar.onnx"
+            urllib.request.urlretrieve(yunet_url, str(YUNET_MODEL_PATH))
+
         if not os.path.exists(SFACE_MODEL_PATH):
-            raise FileNotFoundError(f"SFace model not found at {SFACE_MODEL_PATH}")
+            print(f"Downloading SFace model to {SFACE_MODEL_PATH}...")
+            sface_url = "https://github.com/opencv/opencv_zoo/raw/main/models/face_recognition_sface/face_recognition_sface_2021dec.onnx"
+            urllib.request.urlretrieve(sface_url, str(SFACE_MODEL_PATH))
 
         # Initialize detector with default resolution (will be updated dynamically per image)
         self.detector = cv2.FaceDetectorYN.create(
