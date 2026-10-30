@@ -1,6 +1,7 @@
 # Environments
 venv/
 .env
+.vercel/
 __pycache__/
 *.pyc
 
@@ -18,3 +19,4 @@ models/*.onnx
 # OS generated
 .DS_Store
 Thumbs.db
+.vercel
