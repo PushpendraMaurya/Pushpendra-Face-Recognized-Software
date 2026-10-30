@@ -1,0 +1,20 @@
+# Environments
+venv/
+.env
+__pycache__/
+*.pyc
+
+# Data & Uploads
+data/faces/*
+!data/faces/.gitkeep
+data/*.db
+data/snapshots/*
+!data/snapshots/.gitkeep
+
+# Models (auto-downloaded by run.sh if missing)
+models/*.onnx
+!models/.gitkeep
+
+# OS generated
+.DS_Store
+Thumbs.db

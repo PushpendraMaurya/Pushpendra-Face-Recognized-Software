@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pushpendra Face Recognition Software</title>
+  <link rel="stylesheet" href="/frontend/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%20width=%2232%22%20height=%2232%22><text y=%2224%22 font-size=%2224%22>👤</text></svg>">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="brand-wrapper">
+      <div class="brand-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 7V5a2 2 0 0 1 2-2h2"></path>
+          <path d="M17 3h2a2 2 0 0 1 2 2v2"></path>
+          <path d="M21 17v2a2 2 0 0 1-2 2h-2"></path>
+          <path d="M7 21H5a2 2 0 0 1-2-2v-2"></path>
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M16 16v1a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-1"></path>
+        </svg>
+      </div>
+      <div class="brand-title">
+        <h1>FaceGuard AI</h1>
+        <p>Real-time Deep Learning Face Recognition • OpenCV YuNet + SFace</p>
+      </div>
+    </div>
+
+    <div class="header-status">
+      <div id="system-status-badge" class="status-badge">
+        <span class="status-dot"></span> YuNet & SFace Ready
+      </div>
+      <button id="theme-toggle" class="btn-icon" title="Toggle Theme">🌙</button>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="nav-tabs">
+    <button class="nav-tab active" data-tab="scanner">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      Live Scanner
+    </button>
+    <button class="nav-tab" data-tab="image">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      Photo Scanner
+    </button>
+    <button class="nav-tab" data-tab="enroll">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+      Enroll Person
+    </button>
+    <button class="nav-tab" data-tab="people">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      People Directory
+      <span id="enrolled-count-badge" class="tab-badge">0</span>
+    </button>
+    <button class="nav-tab" data-tab="logs">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      Activity Logs
+    </button>
+    <button class="nav-tab" data-tab="settings">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Settings
+    </button>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="app-container">
+
+    <!-- TAB 1: Live Webcam Scanner -->
+    <section id="tab-scanner" class="tab-content active">
+      <div class="scanner-grid">
+        <!-- Live Video Box -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              Live Video Feed
+            </h2>
+            <span style="font-size:0.8rem; color:var(--text-muted);">Real-time Bounding Box & Identity Matching</span>
+          </div>
+
+          <div class="video-container">
+            <video id="video-element" autoplay playsinline muted></video>
+            <canvas id="overlay-canvas"></canvas>
+            <div id="video-placeholder" class="video-placeholder">
+              <div class="video-placeholder-icon">📷</div>
+              <h3>Webcam is Currently Inactive</h3>
+              <p>Click "Start Camera" below to begin live face recognition.</p>
+            </div>
+          </div>
+
+          <div class="video-controls">
+            <div class="control-group">
+              <button id="btn-toggle-camera" class="btn btn-primary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h3l2-2h6l2 2h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><circle cx="12" cy="13" r="4"/></svg>
+                Start Camera
+              </button>
+              <button id="btn-single-snap" class="btn btn-secondary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+                Log Recognition Event
+              </button>
+            </div>
+            <div style="font-size:0.8rem; color:var(--text-muted);">
+              Press camera button to toggle camera access
+            </div>
+          </div>
+        </div>
+
+        <!-- HUD Sidebar -->
+        <div class="hud-card">
+          <div class="card">
+            <h3 class="card-title" style="margin-bottom:0.75rem;">Engine HUD</h3>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-bottom:1rem;">
+              <div class="metric-box">
+                <div class="metric-label">Latency</div>
+                <div id="hud-fps" class="metric-value">-</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-label">Faces in Frame</div>
+                <div id="hud-faces-count" class="metric-value">0</div>
+              </div>
+            </div>
+
+            <div class="metric-box" style="margin-bottom:1rem;">
+              <div class="metric-label">Stream Status</div>
+              <div id="hud-status" style="font-weight:600; font-size:1.05rem;">Camera Off</div>
+            </div>
+
+            <h4 style="font-size:0.85rem; color:var(--text-sub); margin-bottom:0.5rem;">Detected Identities</h4>
+            <div id="hud-detected-list">
+              <p style="font-size:0.85rem; color:var(--text-muted); text-align:center; padding:1rem;">
+                Start camera to view live recognition
+              </p>
+            </div>
+          </div>
+
+          <div class="card" style="font-size:0.85rem; color:var(--text-muted);">
+            <strong style="color:var(--text-main);">💡 Quick Tip:</strong><br>
+            If a face is showing as "Unknown", enroll that person in the <em>Enroll Person</em> tab. You can also add multiple sample photos to improve recognition accuracy in different lighting or angles.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: Photo Scanner (Upload image) -->
+    <section id="tab-image" class="tab-content">
+      <div class="card" style="max-width:900px; margin:0 auto;">
+        <div class="card-header">
+          <h2 class="card-title">Photo Face Scanner</h2>
+          <span style="font-size:0.8rem; color:var(--text-muted);">Upload or drag an image to detect and recognize all faces</span>
+        </div>
+
+        <div id="analyze-dropzone" class="dropzone">
+          <div class="dropzone-icon">🖼️</div>
+          <h3>Click or Drag & Drop Photo Here</h3>
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-top:0.25rem;">Supports JPG, PNG, WebP image formats</p>
+          <input type="file" id="analyze-file-input" accept="image/*" style="display:none;" />
+        </div>
+
+        <div id="analyze-result-card" style="display:none; margin-top:1.5rem;">
+          <h3 style="margin-bottom:0.75rem;">Analysis Output</h3>
+          <div style="background:#000; border-radius:8px; overflow:hidden; text-align:center; margin-bottom:1rem; border:1px solid var(--border-color);">
+            <canvas id="analyze-canvas" style="max-width:100%; height:auto; display:block; margin:0 auto;"></canvas>
+          </div>
+          <div id="analyze-details" class="card" style="background:rgba(0,0,0,0.2);"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: Enroll Person -->
+    <section id="tab-enroll" class="tab-content">
+      <div class="card" style="max-width:650px; margin:0 auto;">
+        <div class="card-header">
+          <h2 class="card-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+            Enroll New Person
+          </h2>
+        </div>
+
+        <form id="enroll-form">
+          <div class="form-group">
+            <label class="form-label" for="enroll-name">Full Name *</label>
+            <input type="text" id="enroll-name" class="form-input" placeholder="e.g. Pushpendra Kumar" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="enroll-role">Role / Department (Optional)</label>
+            <input type="text" id="enroll-role" class="form-input" placeholder="e.g. Lead Engineer, Admin, Staff, Student" value="Member" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Photo Input Method</label>
+            <div style="display:flex; gap:1.5rem; margin-top:0.4rem;">
+              <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer;">
+                <input type="radio" name="enroll-method" id="enroll-method-webcam" value="webcam" checked />
+                <span>📷 Capture with Webcam</span>
+              </label>
+              <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer;">
+                <input type="radio" name="enroll-method" id="enroll-method-file" value="file" />
+                <span>📁 Upload Image File</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Webcam Capture Section -->
+          <div id="enroll-webcam-area" style="margin-bottom:1.25rem;">
+            <div style="position:relative; width:100%; aspect-ratio:4/3; background:#000; border-radius:8px; overflow:hidden; border:2px dashed var(--border-color); display:flex; align-items:center; justify-content:center;">
+              <video id="enroll-video" autoplay playsinline muted style="width:100%; height:100%; object-fit:cover; transform:scaleX(-1);"></video>
+              <div style="position:absolute; width:180px; height:240px; border:2px dashed rgba(255,255,255,0.4); border-radius:50%; pointer-events:none; box-shadow:0 0 0 9999px rgba(0,0,0,0.35);"></div>
+            </div>
+            <div style="display:flex; gap:0.75rem; margin-top:0.75rem;">
+              <button type="button" id="btn-start-enroll-cam" class="btn btn-secondary" style="flex:1;">
+                Start Camera
+              </button>
+              <button type="button" id="btn-snap-enroll-cam" class="btn btn-primary" style="flex:1;" disabled>
+                📸 Take Photo
+              </button>
+            </div>
+          </div>
+
+          <!-- File Upload Section -->
+          <div id="enroll-file-area" style="display:none; margin-bottom:1.25rem;">
+            <div id="enroll-dropzone" class="dropzone" style="padding:1.75rem 1rem;">
+              <div class="dropzone-icon" style="font-size:2.2rem; margin-bottom:0.4rem;">📁</div>
+              <p style="font-weight:600;">Choose a photo with a clear face</p>
+              <p style="font-size:0.75rem; color:var(--text-muted);">PNG, JPG, or WebP</p>
+              <input type="file" id="enroll-file-input" accept="image/*" style="display:none;" />
+            </div>
+          </div>
+
+          <!-- Captured Photo Preview -->
+          <div id="enroll-preview-box" style="display:none; margin-bottom:1.25rem; text-align:center;">
+            <label class="form-label" style="text-align:left;">Photo Preview</label>
+            <div style="display:inline-block; position:relative; border-radius:8px; overflow:hidden; border:2px solid var(--success);">
+              <img id="enroll-preview-img" src="" alt="Enrollment Preview" style="width:140px; height:140px; object-fit:cover; display:block;" />
+              <div style="position:absolute; bottom:0; left:0; right:0; background:rgba(16,185,129,0.85); color:#fff; font-size:0.7rem; font-weight:700; padding:2px 0;">READY</div>
+            </div>
+          </div>
+
+          <button type="submit" id="btn-enroll-submit" class="btn btn-success" style="width:100%; padding:0.85rem; font-size:1rem;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+            Complete Enrollment
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- TAB 4: People Directory -->
+    <section id="tab-people" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Registered Persons Directory</h2>
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-top:0.2rem;">All enrolled identities and their neural feature representations</p>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="switchTab('enroll')">
+            + Enroll New Person
+          </button>
+        </div>
+
+        <div id="people-grid" class="people-grid">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: Activity & Attendance Logs -->
+    <section id="tab-logs" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Recognition Activity & Attendance Logs</h2>
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-top:0.2rem;">Detailed log of recognized faces, timestamps, confidence, and snapshots</p>
+          </div>
+          <div style="display:flex; gap:0.5rem;">
+            <a href="/api/logs/export" class="btn btn-secondary btn-sm" download>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export CSV
+            </a>
+            <button id="btn-clear-logs" class="btn btn-danger btn-sm">
+              Clear History
+            </button>
+          </div>
+        </div>
+
+        <div style="margin-bottom:1rem;">
+          <input type="text" id="log-search-input" class="form-input" placeholder="🔍 Search logs by person name..." style="max-width:320px;" />
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Face Snapshot</th>
+                <th>Person Name</th>
+                <th>Status</th>
+                <th>Confidence</th>
+                <th>Cosine Similarity</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+            <tbody id="logs-table-body">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: Settings -->
+    <section id="tab-settings" class="tab-content">
+      <div class="card" style="max-width:650px; margin:0 auto;">
+        <h2 class="card-title" style="margin-bottom:1rem;">Recognition Engine Settings</h2>
+
+        <div class="form-group">
+          <label class="form-label">
+            Cosine Similarity Match Threshold:
+            <span id="threshold-val" style="color:var(--primary); font-weight:700;">0.363</span>
+          </label>
+          <div class="slider-container">
+            <span style="font-size:0.75rem; color:var(--text-muted);">Lenient (0.25)</span>
+            <input type="range" id="threshold-slider" min="0.25" max="0.55" step="0.005" value="0.363" />
+            <span style="font-size:0.75rem; color:var(--text-muted);">Strict (0.55)</span>
+          </div>
+          <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.4rem;">
+            Default recommended by OpenCV SFace is <strong>0.363</strong>. Higher values require closer facial matches; lower values allow more variation.
+          </p>
+        </div>
+
+        <div class="form-group" style="display:flex; align-items:center; justify-content:space-between; padding:0.75rem 0; border-top:1px solid var(--border-color);">
+          <div>
+            <div style="font-weight:600; font-size:0.9rem;">Audio Chime on Recognition</div>
+            <div style="font-size:0.75rem; color:var(--text-muted);">Plays a gentle synthesized chime when an enrolled person is verified</div>
+          </div>
+          <input type="checkbox" id="sound-toggle" checked style="width:20px; height:20px; accent-color:var(--primary);" />
+        </div>
+
+        <div class="form-group" style="display:flex; align-items:center; justify-content:space-between; padding:0.75rem 0; border-top:1px solid var(--border-color);">
+          <div>
+            <div style="font-weight:600; font-size:0.9rem;">Auto-Log Activity Events</div>
+            <div style="font-size:0.75rem; color:var(--text-muted);">Automatically records snapshot and recognition entries in the history log</div>
+          </div>
+          <input type="checkbox" id="autolog-toggle" checked style="width:20px; height:20px; accent-color:var(--primary);" />
+        </div>
+
+        <div style="margin-top:1.5rem; padding:1rem; border-radius:8px; background:rgba(0,0,0,0.2); border:1px solid var(--border-color);">
+          <h4 style="margin-bottom:0.4rem; font-size:0.9rem;">Model Architecture</h4>
+          <ul style="font-size:0.8rem; color:var(--text-muted); list-style-position:inside; line-height:1.6;">
+            <li><strong>Face Detector:</strong> YuNet (High-speed, 5 facial landmarks, robust to angles and lighting)</li>
+            <li><strong>Face Recognizer:</strong> SFace (128-dimensional deep feature embedding)</li>
+            <li><strong>Similarity Metric:</strong> Vectorized Cosine Metric on L2-normalized embeddings</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
+
+  <script src="/frontend/js/app.js"></script>
+</body>
+</html>
